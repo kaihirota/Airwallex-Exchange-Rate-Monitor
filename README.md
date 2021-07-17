@@ -73,7 +73,7 @@ to remove build artefacts prior to creating the archive file.
 From inside of `airwallex_conversion_rate_analyzer`, run
 
 ```
-python conversion_rate_analyzer/main.py
+python conversion_rate_analyzer/main.py <input.jsonl>
 ```
 
 ### Test
