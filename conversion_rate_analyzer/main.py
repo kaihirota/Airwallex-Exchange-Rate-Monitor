@@ -6,7 +6,7 @@ from loguru import logger
 from pydantic.error_wrappers import ValidationError
 
 PROJECT_ROOT_DIR = str(Path(__file__).parent.parent)
-if PROJECT_ROOT_DIR not in sys.path: # pragma: no cover
+if PROJECT_ROOT_DIR not in sys.path:  # pragma: no cover
     sys.path.append(PROJECT_ROOT_DIR)
 
 from conversion_rate_analyzer.config import MOVING_AVERAGE_WINDOW, PCT_CHANGE_THRESHOLD
@@ -15,6 +15,7 @@ from conversion_rate_analyzer.moving_average import MovingAverageQueue
 from conversion_rate_analyzer.utils.reader import SpotRateReader
 
 data_points_processed = 0
+
 
 def main():
     if len(sys.argv) < 2:
@@ -51,7 +52,7 @@ def main():
         raise e
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     start_time = time.time()
     main()
     end_time = time.time()

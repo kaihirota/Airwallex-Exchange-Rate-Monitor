@@ -21,8 +21,8 @@ def test_singleton():
     assert queue1 == queue2
 
 
-@patch('sys.argv', ["conversion_rate_analyzer/main.py", test_input_file_10min])
-@patch('conversion_rate_analyzer.config.OUTPUT_FILE', test_output_file)
+@patch("sys.argv", ["conversion_rate_analyzer/main.py", test_input_file_10min])
+@patch("conversion_rate_analyzer.config.OUTPUT_FILE", test_output_file)
 def test_moving_average_10min():
     if os.path.exists(test_output_file):
         os.remove(test_output_file)
@@ -41,8 +41,8 @@ def test_moving_average_10min():
     assert round(queue.get_current_average_rate(currency_pair=currency_pair), 9) == round(1.0081539678695328, 9)
 
 
-@patch('sys.argv', ["conversion_rate_analyzer/main.py", test_input_file_10min])
-@patch('conversion_rate_analyzer.config.OUTPUT_FILE', test_output_file)
+@patch("sys.argv", ["conversion_rate_analyzer/main.py", test_input_file_10min])
+@patch("conversion_rate_analyzer.config.OUTPUT_FILE", test_output_file)
 def test_moving_average_get_queue_size_unknown_currency_pair():
     if os.path.exists(test_output_file):
         os.remove(test_output_file)
@@ -61,8 +61,8 @@ def test_moving_average_get_queue_size_unknown_currency_pair():
     assert f"The currency pair ({currency_pair}) does not exist" in str(excinfo.value)
 
 
-@patch('sys.argv', ["conversion_rate_analyzer/main.py", test_input_file_10min])
-@patch('conversion_rate_analyzer.config.OUTPUT_FILE', test_output_file)
+@patch("sys.argv", ["conversion_rate_analyzer/main.py", test_input_file_10min])
+@patch("conversion_rate_analyzer.config.OUTPUT_FILE", test_output_file)
 def test_moving_average_get_average_rate_unknown_currency_pair():
     if os.path.exists(test_output_file):
         os.remove(test_output_file)
@@ -81,9 +81,9 @@ def test_moving_average_get_average_rate_unknown_currency_pair():
     assert f"The currency pair ({currency_pair}) does not exist" in str(excinfo.value)
 
 
-@patch('sys.argv', ["conversion_rate_analyzer/main.py", test_input_file_10min])
-@patch('conversion_rate_analyzer.config.OUTPUT_FILE', test_output_file)
-@patch('conversion_rate_analyzer.config.VERBOSE', True)
+@patch("sys.argv", ["conversion_rate_analyzer/main.py", test_input_file_10min])
+@patch("conversion_rate_analyzer.config.OUTPUT_FILE", test_output_file)
+@patch("conversion_rate_analyzer.config.VERBOSE", True)
 def test_moving_average_verbose():
     if os.path.exists(test_output_file):
         os.remove(test_output_file)

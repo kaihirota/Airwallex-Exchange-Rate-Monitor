@@ -22,14 +22,14 @@ class CurrencyConversionRate(BaseModel):
     currencyPair: str
     rate: float
 
-    @validator('timestamp')
+    @validator("timestamp")
     def check_timestamp(cls, v: float):
         """Validate timestamp before instantiating this object"""
         try:
             datetime.utcfromtimestamp(v)
             return v
         except Exception as e:
-            raise ValueError('timestamp must be Unix Timestamp') from e
+            raise ValueError("timestamp must be Unix Timestamp") from e
 
     def get_datetime(self) -> datetime:
         """Returns the datetime object of the timestamp."""

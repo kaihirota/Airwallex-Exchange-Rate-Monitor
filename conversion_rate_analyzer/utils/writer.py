@@ -31,6 +31,6 @@ class SpotRateWriter:
         if not os.path.exists(config.OUTPUT_FILE):
             logger.info(f"Output file ({config.OUTPUT_FILE}) does not exist. Creating file.")
 
-        writer: Writer = jsonlines.open(config.OUTPUT_FILE, mode='a')
+        writer: Writer = jsonlines.open(config.OUTPUT_FILE, mode="a")
         writer.write(out)
         writer.close()

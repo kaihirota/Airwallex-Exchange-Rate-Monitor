@@ -1,4 +1,4 @@
-from queue import Queue
+from queue import PriorityQueue
 
 from loguru import logger
 
@@ -45,8 +45,8 @@ class MovingAverageQueue:
         if data.currencyPair not in self.known_currency_pairs:
             self.known_currency_pairs.add(data.currencyPair)
             # TODO: use priority queue instead to dequeue the oldest rate even if they arrive out-of-order?
-            self.conversion_rates_queue[data.currencyPair] = Queue(maxsize=config.MOVING_AVERAGE_WINDOW)
-            self.conversion_rates_queue[data.currencyPair].put(data.rate)
+            self.conversion_rates_queue[data.currencyPair] = PriorityQueue(maxsize=config.MOVING_AVERAGE_WINDOW)
+            self.conversion_rates_queue[data.currencyPair].put((data.timestamp, data.rate))
             self.conversion_rates_sum_count[data.currencyPair] = (data.rate, 1)
         else:
             # calculate percentage difference between the new conversion rate and the average rate
@@ -63,21 +63,21 @@ class MovingAverageQueue:
                 logger.info(
                     (
                         f"Significant rate change (>= {config.PCT_CHANGE_THRESHOLD}) recorded."
-                        f"\n\tCurrency pair: {data.currencyPair}"
-                        f"\n\tAverage rate: {current_avg_rate:.6f}"
-                        f"\n\tNew spot rate: {data.rate:.6f}"
+                        f"\n\tCurrency pair : {data.currencyPair}"
+                        f"\n\tAverage rate  : {current_avg_rate:.6f}"
+                        f"\n\tNew spot rate : {data.rate:.6f}"
                         f"\n\tPercent change: {pct_change * 100:.2f}%"
                     )
                 )
 
             # update queue, total, and count
             if self.conversion_rates_queue[data.currencyPair].full():
-                expired_rate = self.conversion_rates_queue[data.currencyPair].get()
+                _, expired_rate = self.conversion_rates_queue[data.currencyPair].get()
                 self.conversion_rates_sum_count[data.currencyPair] = (total - expired_rate + data.rate, count)
             else:
                 self.conversion_rates_sum_count[data.currencyPair] = (total + data.rate, count + 1)
 
-            self.conversion_rates_queue[data.currencyPair].put(data.rate)
+            self.conversion_rates_queue[data.currencyPair].put((data.timestamp, data.rate))
 
     def get_current_queue_size(self, currency_pair: str) -> int:
         if self.currency_pair_exists(currency_pair):

@@ -12,13 +12,13 @@ from conversion_rate_analyzer.main import main
 test_output_file = os.path.join(config.OUTPUT_DIR, "output_test.jsonl")
 
 
-@patch('sys.argv', ["conversion_rate_analyzer/main.py"])
+@patch("sys.argv", ["conversion_rate_analyzer/main.py"])
 def test_main_omit_input_file():
     with pytest.raises(IndexError):
         main()
 
 
-@patch('sys.argv', ["conversion_rate_analyzer/main.py", "foo.jsonl"])
+@patch("sys.argv", ["conversion_rate_analyzer/main.py", "foo.jsonl"])
 def test_main_nonexistent_input_file():
     with pytest.raises(FileNotFoundError):
         main()
@@ -34,14 +34,14 @@ def test_main_invalid_input_file(caplog):
     writer.write({"timestamp": 1554933784.023, "currencyPair": "CNYAUD"})
     writer.close()
 
-    with patch.object(sys, "argv", ['conversion_rate_analyzer/main.py', test_input_file]):
+    with patch.object(sys, "argv", ["conversion_rate_analyzer/main.py", test_input_file]):
         main()
         assert "field required (type=value_error.missing)" in caplog.text
 
     os.remove(test_input_file)
 
 
-@patch('sys.argv', ['conversion_rate_analyzer/main.py', 'example/input1.jsonl'])
+@patch("sys.argv", ["conversion_rate_analyzer/main.py", "example/input1.jsonl"])
 def test_main():
     if os.path.exists(test_output_file):
         os.remove(test_output_file)
