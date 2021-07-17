@@ -1,8 +1,13 @@
+from pathlib import Path
 import sys
 import time
 
 from loguru import logger
 from pydantic.error_wrappers import ValidationError
+
+PROJECT_ROOT_DIR = str(Path(__file__).parent.parent)
+if PROJECT_ROOT_DIR not in sys.path: # pragma: no cover
+    sys.path.append(PROJECT_ROOT_DIR)
 
 from conversion_rate_analyzer.config import MOVING_AVERAGE_WINDOW, PCT_CHANGE_THRESHOLD
 from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
@@ -11,8 +16,6 @@ from conversion_rate_analyzer.utils.reader import SpotRateReader
 
 data_points_processed = 0
 
-
-@logger.catch
 def main():
     if len(sys.argv) < 2:
         e = IndexError("Supply the input file path as an argument: python main.py input.jsonl")
