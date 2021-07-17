@@ -13,7 +13,12 @@ MOVING_AVERAGE_WINDOW = 60 * 5
 
 PCT_CHANGE_THRESHOLD = 0.1
 
-OUTPUT_FILE = os.path.join(PROJECT_ROOT_DIR, "output/output.jsonl")
+OUTPUT_DIR = os.path.join(PROJECT_ROOT_DIR, "output")
+
+if not os.path.exists(OUTPUT_DIR):
+    os.mkdir(OUTPUT_DIR)
+
+OUTPUT_FILE = os.path.join(OUTPUT_DIR, "output.jsonl")
 
 """
 if VERBOSE is set to True, new conversation rate, moving average, and 
