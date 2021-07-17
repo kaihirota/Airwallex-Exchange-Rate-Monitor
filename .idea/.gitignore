@@ -1,3 +1,11 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+/airwallex.iml
+/airwallex_codechallenge.iml
+/sonarlint/issuestore/index.pb
+/misc.xml
+/modules.xml
+/inspectionProfiles/profiles_settings.xml
+/inspectionProfiles/Project_Default.xml
+/vcs.xml
