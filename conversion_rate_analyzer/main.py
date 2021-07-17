@@ -14,8 +14,10 @@ data_points_processed = 0
 @logger.catch
 def main():
     if len(sys.argv) < 2:
-        logger.warning("Supply the input file path as an argument: python main.py input.jsonl")
-        sys.exit(-1)
+        e = IndexError("Supply the input file path as an argument: python main.py input.jsonl")
+        logger.warning(e)
+        # sys.exit(1)
+        raise e
 
     input_file = sys.argv[1]
     logger.info(
@@ -41,7 +43,7 @@ def main():
                 logger.warning(e)
     except FileNotFoundError as e:
         logger.exception(e)
-        # sys.exit(-1)
+        # sys.exit(1)
         raise e
 
 
