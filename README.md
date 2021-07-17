@@ -67,19 +67,46 @@ Please execute
 to remove build artefacts prior to creating the archive file.
 
 **Note:** We will not consider submissions that are uploaded to Github.
----
 
-### Run
+---
+# Setup
+
+```shell
+pip install -r requirements.txt
+```
+
+# Run
+
 From inside of `airwallex_conversion_rate_analyzer`, run
 
 ```
 python conversion_rate_analyzer/main.py <input.jsonl>
 ```
 
-### Test
+Example:
+```
+python conversion_rate_analyzer/main.py example/input.jsonl
+```
 
+Alternatively, edit the input file inside of Makefile under `test:`, and run
+
+```
+make run
+```
+
+# Test
+
+## Without Docker
 From inside of `airwallex_conversion_rate_analyzer`, run
 
 ```
-make test
+make test && make clean
+```
+
+## As a Docker container
+From inside of `airwallex_conversion_rate_analyzer`, run
+
+```
+docker-compose up
+docker-compose down
 ```

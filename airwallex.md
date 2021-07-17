@@ -1,14 +1,14 @@
 ## Instruction
 
 As discussed, the next step in our interview process is for you to complete the Airwallex coding challenge. Please find the instructions for the challenge [here.](https://drive.google.com/file/d/17RNueLW8XD4uhHk3gOevauX_NWDcXdCH/view?usp=sharing)
-There is no hard time limit on this but we would love for you to send it back to me by Monday 19th July 9am so make sure you put your best foot forward We’re primarily looking for a correct solution, but we are an engineering company at our core, so give some thought to how your code is structured, levels of abstraction, testing and extensibility for the future.
+There is no hard time limit on this, but we would love for you to send it back to me by Monday 19th July 9am so make sure you put your best foot forward We’re primarily looking for a correct solution, but we are an engineering company at our core, so give some thought to how your code is structured, levels of abstraction, testing and extensibility for the future.
 Please do the assessment in your coding language of choice. We have no preference.
 
 ---
 
 ## Design Document
 
-> You may assume that for each currency pair, currency conversion rates are streamed at a constant rate of one per second. ie. for two consecutive "CNYAUD" entries in the input file, they will have timestamps that differ by one second
+> You may assume that for each currency pair, currency conversion rates are streamed at a constant rate of one per second. i.e. for two consecutive "CNYAUD" entries in the input file, they will have timestamps that differ by one second
 
 Based on the assumption that new data point for each conversion rates are received every second, the number of data points received per second is
 $$
@@ -24,7 +24,7 @@ If $n=100$, then $P(100, 2)=9900$ data points will need to be processed every se
 
 For each data point, the program needs to
 
-- Calculate the percentage difference between the new spot rate and the last 5-minute moving average.
+- Calculate the percentage difference between the new spot rate, and the last 5-minute moving average.
 - Alert (print to console) if the percentage difference is greater than or equal to 10%.
 - Update the 5-minute moving average for that particular currency pair.
 
@@ -47,3 +47,20 @@ Assumption: Since we are dealing with currency exchange, whenever there is a cha
 
 Due to global interpreter lock, Python may not be the best language of choice for solving this problem.
 
+---
+
+## Data structure considerations
+
+For keeping track of moving averages, Queue and PriorityQueue which are included in the queue standard library were considered.
+
+Tradeoff: Speed vs Correctness of 
+
+- Queue
+	- Enqueue / Dequeue: $O(1)$
+	- If currency exchange rate data arrives out-of-order, items in the queue will be dequeued in the order that they came in.
+	- Moving average will be incorrect when data is received out-of-order
+		- If the maxsize is big enough, the error that arises as a result of out-of-order data points will be minimized.
+- PriorityQueue
+	- Enqueue / Dequeue: $O(\log n)$
+	- Even if currency exchange rate data happens to arrive out-of-order, it will still dequeue the oldest data
+		- As long as data points are not lost in transit (or even if they get lost, they simply need to be retransmitted out-of-order), the moving average will be correct.
