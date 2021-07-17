@@ -2,7 +2,7 @@ from queue import Queue
 
 from loguru import logger
 
-from conversion_rate_analyzer.config import MOVING_AVERAGE_WINDOW, PCT_CHANGE_THRESHOLD, VERBOSE
+from conversion_rate_analyzer import config
 from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
 from conversion_rate_analyzer.utils.writer import SpotRateWriter
 
@@ -45,7 +45,8 @@ class MovingAverageQueue:
         if data.currencyPair not in self.known_currency_pairs:
             self.known_currency_pairs.add(data.currencyPair)
             # TODO: use priority queue instead to dequeue the oldest rate even if they arrive out-of-order?
-            self.conversion_rates_queue[data.currencyPair] = Queue(maxsize=MOVING_AVERAGE_WINDOW)
+            self.conversion_rates_queue[data.currencyPair] = Queue(maxsize=config.MOVING_AVERAGE_WINDOW)
+            self.conversion_rates_queue[data.currencyPair].put(data.rate)
             self.conversion_rates_sum_count[data.currencyPair] = (data.rate, 1)
         else:
             # calculate percentage difference between the new conversion rate and the average rate
@@ -53,15 +54,15 @@ class MovingAverageQueue:
             current_avg_rate = self.get_current_average_rate(data.currencyPair)
             pct_change = (data.rate - current_avg_rate) / current_avg_rate
 
-            if pct_change >= PCT_CHANGE_THRESHOLD:
-                if VERBOSE:
+            if pct_change >= config.PCT_CHANGE_THRESHOLD:
+                if config.VERBOSE:
                     SpotRateWriter().write(data, current_avg_rate, pct_change)
                 else:
                     SpotRateWriter().write(data)
 
                 logger.info(
                     (
-                        f"Significant rate change (>= {PCT_CHANGE_THRESHOLD}) recorded."
+                        f"Significant rate change (>= {config.PCT_CHANGE_THRESHOLD}) recorded."
                         f"\n\tAverage rate: {current_avg_rate:.6f}"
                         f"\n\tNew spot rate: {data.rate:.6f}"
                         f"\n\tPercent change: {pct_change * 100:.2f}%"
@@ -70,7 +71,7 @@ class MovingAverageQueue:
 
             # update queue, total, and count
             if self.conversion_rates_queue[data.currencyPair].full():
-                expired_rate = self.conversion_rates_queue[data.currencyPair].get_nowait()
+                expired_rate = self.conversion_rates_queue[data.currencyPair].get()
                 self.conversion_rates_sum_count[data.currencyPair] = (total - expired_rate + data.rate, count)
             else:
                 self.conversion_rates_sum_count[data.currencyPair] = (total + data.rate, count + 1)

@@ -26,6 +26,8 @@ def test_writer_verbose(conversion_rate: CurrencyConversionRate):
         os.remove(test_output_file)
 
     SpotRateWriter().write(conversion_rate, current_avg_rate=0.353529, pct_change=0.11)
+    assert config.OUTPUT_FILE == test_output_file
+    assert os.path.exists(test_output_file)
     reader = jsonlines.open(config.OUTPUT_FILE)
     data = reader.read()
     assert data.keys() == {"timestamp", "currencyPair", "alert", "rate", "average_rate", "pct_change"}
