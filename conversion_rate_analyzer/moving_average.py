@@ -2,9 +2,9 @@ from queue import Queue
 
 from loguru import logger
 
-from config import MOVING_AVERAGE_WINDOW, PCT_CHANGE_THRESHOLD, VERBOSE
-from models.currency_conversion_rate import CurrencyConversionRate
-from utils.writer import SpotRateWriter
+from conversion_rate_analyzer.config import MOVING_AVERAGE_WINDOW, PCT_CHANGE_THRESHOLD, VERBOSE
+from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
+from conversion_rate_analyzer.utils.writer import SpotRateWriter
 
 
 class MovingAverageQueue:

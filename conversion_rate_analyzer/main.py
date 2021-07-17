@@ -4,12 +4,13 @@ import time
 from loguru import logger
 from pydantic.error_wrappers import ValidationError
 
-from config import MOVING_AVERAGE_WINDOW, PCT_CHANGE_THRESHOLD
-from models.currency_conversion_rate import CurrencyConversionRate
-from moving_average import MovingAverageQueue
-from utils.reader import SpotRateReader
+from conversion_rate_analyzer.config import MOVING_AVERAGE_WINDOW, PCT_CHANGE_THRESHOLD
+from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
+from conversion_rate_analyzer.moving_average import MovingAverageQueue
+from conversion_rate_analyzer.utils.reader import SpotRateReader
 
 data_points_processed = 0
+
 
 @logger.catch
 def main():
@@ -52,4 +53,3 @@ if __name__ == '__main__':
     main()
     end_time = time.time()
     print(f"{data_points_processed} data points processed in {end_time - start_time:.2f} seconds")
-
