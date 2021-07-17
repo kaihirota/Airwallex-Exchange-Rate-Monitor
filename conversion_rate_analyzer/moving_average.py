@@ -63,6 +63,7 @@ class MovingAverageQueue:
                 logger.info(
                     (
                         f"Significant rate change (>= {config.PCT_CHANGE_THRESHOLD}) recorded."
+                        f"\n\tCurrency pair: {data.currencyPair}"
                         f"\n\tAverage rate: {current_avg_rate:.6f}"
                         f"\n\tNew spot rate: {data.rate:.6f}"
                         f"\n\tPercent change: {pct_change * 100:.2f}%"
