@@ -1,6 +1,9 @@
-.PHONY: test clean
+.PHONY: test clean run
 
 default: test
+
+run:
+	PYTHONPATH=$(pwd) python conversion_rate_analyzer/main.py data/10min.jsonl
 
 test:
 	PYTHONPATH=$(pwd) pytest
