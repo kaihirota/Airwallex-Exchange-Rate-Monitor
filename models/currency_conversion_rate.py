@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel, ValidationError, validator
+from pydantic import BaseModel, validator
 
 UnixTimestamp = float
 
@@ -14,7 +14,7 @@ class CurrencyConversionRate(BaseModel):
         return datetime.utcfromtimestamp(self.timestamp)
 
     @validator('timestamp')
-    def timestamp_must_be_unix(cls, v):
+    def check_timestamp(cls, v):
         try:
             datetime.utcfromtimestamp(v)
             return v
