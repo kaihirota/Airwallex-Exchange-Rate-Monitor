@@ -5,9 +5,9 @@ from loguru import logger
 from config import MOVING_AVERAGE_WINDOW, PCT_CHANGE_THRESHOLD
 from models.currency_conversion_rate import CurrencyConversionRate
 from moving_average import MovingAverageQueue
-from reader import SpotRateReader
+from utils.reader import SpotRateReader
+from pydantic.error_wrappers import ValidationError
 
-queue = MovingAverageQueue()
 
 @logger.catch
 def main():
@@ -20,19 +20,23 @@ def main():
         (
             "Program starting with parameters:"
             f"\n\tInput File: {input_file}"
-            f"\n\tMoving Average Window Size: {MOVING_AVERAGE_WINDOW} ({MOVING_AVERAGE_WINDOW/60:.2f} minutes)"
+            f"\n\tMoving Average Window Size: {MOVING_AVERAGE_WINDOW} ({MOVING_AVERAGE_WINDOW / 60:.2f} minutes)"
             f"\n\tPercent Change Threshold: {PCT_CHANGE_THRESHOLD}"
         )
     )
 
+    queue = MovingAverageQueue()
+
     try:
         reader = SpotRateReader().jsonlines_reader(input_file)
         for obj in reader:
-            data = CurrencyConversionRate.parse_obj(obj)
-            queue.process_new_rate(data)
-
+            try:
+                data = CurrencyConversionRate.parse_obj(obj)
+                queue.process_new_rate(data)
+            except ValidationError as e:
+                logger.warning(e)
     except FileNotFoundError as e:
-        logger.warning("The input file does not exist")
+        logger.exception(e)
         sys.exit(-1)
 
 
