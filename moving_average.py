@@ -32,8 +32,8 @@ class MovingAverageQueue:
                 logger.info(
                     (
                         f"Significant rate change (>= {PCT_CHANGE_THRESHOLD}) detected."
-                        f"\n\tAverage rate: {total / count}"
-                        f"\n\tNew spot rate: {data.rate}"
+                        f"\n\tAverage rate: {total / count:.6f}"
+                        f"\n\tNew spot rate: {data.rate:.6f}"
                         f"\n\tPercent change: {pct_diff * 100:.2f}%"
                     )
                 )
