@@ -1,15 +1,19 @@
 import os
+from pathlib import Path
+
 from loguru import logger
 
-LOG_DIR = "logs"
+# configure log output directory
+PROJECT_ROOT_DIR = Path(__file__).parent.parent
+LOG_DIR = os.path.join(PROJECT_ROOT_DIR, "logs")
 logger.add(os.path.join(LOG_DIR, "file_{time}.log"))
 
-# 5 minute moving average
+# moving average window
 MOVING_AVERAGE_WINDOW = 60 * 5
 
 PCT_CHANGE_THRESHOLD = 0.1
 
-OUTPUT_FILE = "output/output.jsonl"
+OUTPUT_FILE = os.path.join(PROJECT_ROOT_DIR, "output/output.jsonl")
 
 """
 if VERBOSE is set to True, new conversation rate, moving average, and 

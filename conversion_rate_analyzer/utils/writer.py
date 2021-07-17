@@ -4,8 +4,8 @@ import jsonlines
 from jsonlines.jsonlines import Writer
 from loguru import logger
 
-from config import OUTPUT_FILE, VERBOSE
-from models.currency_conversion_rate import CurrencyConversionRate
+from conversion_rate_analyzer.config import OUTPUT_FILE, VERBOSE
+from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
 
 
 @logger.catch

@@ -1,12 +1,12 @@
 import sys
 
 from loguru import logger
-
-from config import MOVING_AVERAGE_WINDOW, PCT_CHANGE_THRESHOLD
-from models.currency_conversion_rate import CurrencyConversionRate
-from moving_average import MovingAverageQueue
-from utils.reader import SpotRateReader
 from pydantic.error_wrappers import ValidationError
+
+from conversion_rate_analyzer.config import MOVING_AVERAGE_WINDOW, PCT_CHANGE_THRESHOLD
+from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
+from conversion_rate_analyzer.moving_average import MovingAverageQueue
+from conversion_rate_analyzer.utils.reader import SpotRateReader
 
 
 @logger.catch
@@ -37,7 +37,8 @@ def main():
                 logger.warning(e)
     except FileNotFoundError as e:
         logger.exception(e)
-        sys.exit(-1)
+        # sys.exit(-1)
+        raise e
 
 
 if __name__ == '__main__':
