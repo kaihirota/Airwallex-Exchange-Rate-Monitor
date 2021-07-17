@@ -3,9 +3,9 @@ from unittest.mock import patch
 
 import jsonlines
 
+from conversion_rate_analyzer import config
 from conversion_rate_analyzer.utils.writer import SpotRateWriter
 from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
-from conversion_rate_analyzer import config
 
 test_output_file = os.path.join(config.OUTPUT_DIR, "output_test.jsonl")
 
