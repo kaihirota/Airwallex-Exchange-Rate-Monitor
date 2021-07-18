@@ -44,7 +44,6 @@ class MovingAverageQueue:
 
         if data.currencyPair not in self.known_currency_pairs:
             self.known_currency_pairs.add(data.currencyPair)
-            # TODO: use priority queue instead to dequeue the oldest rate even if they arrive out-of-order?
             self.conversion_rates_queue[data.currencyPair] = PriorityQueue(maxsize=config.MOVING_AVERAGE_WINDOW)
             self.conversion_rates_queue[data.currencyPair].put((data.timestamp, data.rate))
             self.conversion_rates_sum_count[data.currencyPair] = (data.rate, 1)

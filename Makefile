@@ -1,6 +1,6 @@
 .PHONY: test clean run
 
-default: test
+default: all
 
 run:
 	PYTHONPATH=$(pwd) python conversion_rate_analyzer/main.py data/10min_single_curr.jsonl
@@ -17,3 +17,5 @@ clean:
 	rm -rf __pycache__
 	rm output/output.jsonl
 	rm output/output_test.jsonl
+
+all: test clean
