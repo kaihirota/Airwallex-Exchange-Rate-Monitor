@@ -8,9 +8,11 @@ run:
 test:
 	PYTHONPATH=$(pwd) pytest
 
+clean: SHELL := /bin/bash
 clean:
 	rm .coverage
 	rm -rf htmlcov
 	rm -rf logs
 	rm -rf .pytest_cache
-	for file in $(find output -type f -not -name "output1.jsonl"); do rm $file; done
+	rm output/output.jsonl
+	rm output/output_test.jsonl

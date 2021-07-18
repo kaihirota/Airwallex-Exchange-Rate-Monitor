@@ -10,8 +10,8 @@ from conversion_rate_analyzer.moving_average import MovingAverageQueue
 from conversion_rate_analyzer.utils.reader import SpotRateReader
 from conversion_rate_analyzer.utils.writer import SpotRateWriter
 
-test_input_file = os.path.join(config.PROJECT_ROOT_DIR, "example/input1.jsonl")
-test_input_file_10min = os.path.join(config.PROJECT_ROOT_DIR, "data/10min.jsonl")
+test_input_file = os.path.join(config.PROJECT_ROOT_DIR, "input/input1.jsonl")
+test_input_file_10min = os.path.join(config.PROJECT_ROOT_DIR, "input/10min.jsonl")
 test_output_file = os.path.join(config.OUTPUT_DIR, "output_test.jsonl")
 
 

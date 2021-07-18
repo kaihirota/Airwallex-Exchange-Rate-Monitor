@@ -13,7 +13,7 @@ PROJECT_ROOT_DIR = Path(__file__).parent.parent
 
 @pytest.fixture
 def sample_input_path() -> str:
-    return os.path.join(PROJECT_ROOT_DIR, "example/input1.jsonl")
+    return os.path.join(PROJECT_ROOT_DIR, "input/input1.jsonl")
 
 
 @pytest.fixture

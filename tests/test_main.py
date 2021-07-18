@@ -25,7 +25,7 @@ def test_main_nonexistent_input_file():
 
 
 def test_main_invalid_input_file(caplog):
-    test_input_file = os.path.join(config.PROJECT_ROOT_DIR, "data/input_test.jsonl")
+    test_input_file = os.path.join(config.PROJECT_ROOT_DIR, "input/input_test.jsonl")
 
     if os.path.exists(test_input_file):
         os.remove(test_input_file)
@@ -41,7 +41,7 @@ def test_main_invalid_input_file(caplog):
     os.remove(test_input_file)
 
 
-@patch("sys.argv", ["conversion_rate_analyzer/main.py", "example/input1.jsonl"])
+@patch("sys.argv", ["conversion_rate_analyzer/main.py", "input/input1.jsonl"])
 def test_main():
     if os.path.exists(test_output_file):
         os.remove(test_output_file)
