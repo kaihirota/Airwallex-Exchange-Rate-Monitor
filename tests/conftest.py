@@ -14,6 +14,7 @@ PROJECT_ROOT_DIR = Path(__file__).parent.parent
 
 @pytest.fixture
 def caplog(_caplog):
+    """for testing logging message content"""
     class PropogateHandler(logging.Handler):
         def emit(self, record):
             logging.getLogger(record.name).handle(record)

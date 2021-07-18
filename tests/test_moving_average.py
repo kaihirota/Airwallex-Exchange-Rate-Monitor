@@ -1,15 +1,11 @@
-import os
 from unittest.mock import patch
 
 import jsonlines
 import pytest
 
-from conversion_rate_analyzer import config
 from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
 from conversion_rate_analyzer.moving_average import MovingAverageQueue
 from conversion_rate_analyzer.utils.reader import SpotRateReader
-
-test_input_file = os.path.join(config.PROJECT_ROOT_DIR, "input/input1.jsonl")
 
 
 def test_singleton():
