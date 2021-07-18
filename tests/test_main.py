@@ -50,7 +50,7 @@ def test_main(path_output_file_test: str):
     assert data_points_processed == 11
 
 
-@patch("sys.argv", ["conversion_rate_analyzer/main.py", "input/input2.jsonl"])
+@patch("sys.argv", ["conversion_rate_analyzer/main.py", "input/testinput1.jsonl"])
 def test_main_invalid_jsonline(path_input_file_sample: str, path_output_file_test: str):
     reader = jsonlines.open(path_input_file_sample)
 
