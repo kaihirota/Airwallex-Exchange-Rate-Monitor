@@ -17,4 +17,3 @@ clean:
 	rm -rf __pycache__
 	rm output/output.jsonl
 	rm output/output_test.jsonl
-	rm .DS_Store
