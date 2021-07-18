@@ -3,9 +3,9 @@ import os
 from pathlib import Path
 from typing import Dict
 
-from loguru import logger
-import pytest
 from _pytest.logging import caplog as _caplog
+import pytest
+from loguru import logger
 
 from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
 
@@ -15,6 +15,7 @@ PROJECT_ROOT_DIR = Path(__file__).parent.parent
 @pytest.fixture
 def caplog(_caplog):
     """for testing logging message content"""
+
     class PropogateHandler(logging.Handler):
         def emit(self, record):
             logging.getLogger(record.name).handle(record)
@@ -32,6 +33,11 @@ def path_input_file_sample() -> str:
 @pytest.fixture
 def path_input_file_10min_single_curr_stream() -> str:
     return os.path.join(PROJECT_ROOT_DIR, "input/10min_single_curr.jsonl")
+
+
+@pytest.fixture
+def path_input_file_10min_single_curr_stream_outoforder() -> str:
+    return os.path.join(PROJECT_ROOT_DIR, "input/10min_single_curr_out_of_order.jsonl")
 
 
 @pytest.fixture

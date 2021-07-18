@@ -4,8 +4,8 @@ from unittest.mock import patch
 import jsonlines
 
 from conversion_rate_analyzer import config
-from conversion_rate_analyzer.utils.writer import SpotRateWriter
 from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
+from conversion_rate_analyzer.utils.writer import SpotRateWriter
 
 
 def test_writer(conversion_rate_valid: CurrencyConversionRate, path_output_file_test: str):
