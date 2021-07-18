@@ -34,6 +34,29 @@ def test_moving_average_10min_single_curr(
     assert round(queue.get_current_average_rate(currency_pair=currency_pair), 9) == round(0.9934236150574627, 9)
 
 
+def test_moving_average_10min_single_curr_out_of_order(
+        path_input_file_10min_single_curr_stream_outoforder: str,
+        path_output_file_test: str
+):
+    with patch("sys.argv", ["conversion_rate_analyzer/main.py", path_input_file_10min_single_curr_stream_outoforder]):
+        with patch("conversion_rate_analyzer.config.OUTPUT_FILE", path_output_file_test):
+            queue = MovingAverageQueue()
+            reader = SpotRateReader().jsonlines_reader(path_input_file_10min_single_curr_stream_outoforder)
+
+            for obj in reader:
+                data = CurrencyConversionRate.parse_obj(obj)
+                queue.process_new_rate(data)
+
+    currency_pair = "AUDUSD"
+    items = []
+    while not queue.conversion_rates_queue[currency_pair].empty():
+        ts, rate = queue.conversion_rates_queue[currency_pair].get()
+        items += ts,
+
+    start = 1626594160
+    assert items == list(range(start, start + 300))
+
+
 def test_moving_average_get_queue_size_unknown_currency_pair(
         path_input_file_10min_single_curr_stream: str,
         path_output_file_test: str
@@ -76,7 +99,6 @@ def test_moving_average_get_average_rate_unknown_currency_pair(
 
 @patch("conversion_rate_analyzer.config.VERBOSE", True)
 def test_moving_average_verbose(path_input_file_10min_single_curr_stream: str, path_output_file_test: str):
-
     with patch("sys.argv", ["conversion_rate_analyzer/main.py", path_input_file_10min_single_curr_stream]):
         with patch("conversion_rate_analyzer.config.OUTPUT_FILE", path_output_file_test):
             queue = MovingAverageQueue()
