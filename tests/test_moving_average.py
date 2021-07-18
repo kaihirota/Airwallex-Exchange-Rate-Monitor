@@ -18,14 +18,14 @@ def test_singleton():
     assert queue1 == queue2
 
 
-def test_moving_average_10min(
-        path_input_file_10min_stream: str,
+def test_moving_average_10min_single_curr(
+        path_input_file_10min_single_curr_stream: str,
         path_output_file_test: str
 ):
-    with patch("sys.argv", ["conversion_rate_analyzer/main.py", path_input_file_10min_stream]):
+    with patch("sys.argv", ["conversion_rate_analyzer/main.py", path_input_file_10min_single_curr_stream]):
         with patch("conversion_rate_analyzer.config.OUTPUT_FILE", path_output_file_test):
             queue = MovingAverageQueue()
-            reader = SpotRateReader().jsonlines_reader(path_input_file_10min_stream)
+            reader = SpotRateReader().jsonlines_reader(path_input_file_10min_single_curr_stream)
 
             for obj in reader:
                 data = CurrencyConversionRate.parse_obj(obj)
@@ -35,17 +35,17 @@ def test_moving_average_10min(
     assert queue.currency_pair_exists(currency_pair) is True
     assert queue.get_known_currency_pairs() == {currency_pair}
     assert queue.get_current_queue_size(currency_pair=currency_pair) == 300
-    assert round(queue.get_current_average_rate(currency_pair=currency_pair), 9) == round(1.0081539678695328, 9)
+    assert round(queue.get_current_average_rate(currency_pair=currency_pair), 9) == round(0.9934236150574627, 9)
 
 
 def test_moving_average_get_queue_size_unknown_currency_pair(
-        path_input_file_10min_stream: str,
+        path_input_file_10min_single_curr_stream: str,
         path_output_file_test: str
 ):
-    with patch("sys.argv", ["conversion_rate_analyzer/main.py", path_input_file_10min_stream]):
+    with patch("sys.argv", ["conversion_rate_analyzer/main.py", path_input_file_10min_single_curr_stream]):
         with patch("conversion_rate_analyzer.config.OUTPUT_FILE", path_output_file_test):
             queue = MovingAverageQueue()
-            reader = SpotRateReader().jsonlines_reader(path_input_file_10min_stream)
+            reader = SpotRateReader().jsonlines_reader(path_input_file_10min_single_curr_stream)
 
             for obj in reader:
                 data = CurrencyConversionRate.parse_obj(obj)
@@ -59,13 +59,13 @@ def test_moving_average_get_queue_size_unknown_currency_pair(
 
 
 def test_moving_average_get_average_rate_unknown_currency_pair(
-        path_input_file_10min_stream: str,
+        path_input_file_10min_single_curr_stream: str,
         path_output_file_test: str
 ):
-    with patch("sys.argv", ["conversion_rate_analyzer/main.py", path_input_file_10min_stream]):
+    with patch("sys.argv", ["conversion_rate_analyzer/main.py", path_input_file_10min_single_curr_stream]):
         with patch("conversion_rate_analyzer.config.OUTPUT_FILE", path_output_file_test):
             queue = MovingAverageQueue()
-            reader = SpotRateReader().jsonlines_reader(path_input_file_10min_stream)
+            reader = SpotRateReader().jsonlines_reader(path_input_file_10min_single_curr_stream)
 
             for obj in reader:
                 data = CurrencyConversionRate.parse_obj(obj)
@@ -79,12 +79,12 @@ def test_moving_average_get_average_rate_unknown_currency_pair(
 
 
 @patch("conversion_rate_analyzer.config.VERBOSE", True)
-def test_moving_average_verbose(path_input_file_10min_stream: str, path_output_file_test: str):
+def test_moving_average_verbose(path_input_file_10min_single_curr_stream: str, path_output_file_test: str):
 
-    with patch("sys.argv", ["conversion_rate_analyzer/main.py", path_input_file_10min_stream]):
+    with patch("sys.argv", ["conversion_rate_analyzer/main.py", path_input_file_10min_single_curr_stream]):
         with patch("conversion_rate_analyzer.config.OUTPUT_FILE", path_output_file_test):
             queue = MovingAverageQueue()
-            reader = SpotRateReader().jsonlines_reader(path_input_file_10min_stream)
+            reader = SpotRateReader().jsonlines_reader(path_input_file_10min_single_curr_stream)
 
             for obj in reader:
                 data = CurrencyConversionRate.parse_obj(obj)

@@ -3,7 +3,7 @@
 default: test
 
 run:
-	PYTHONPATH=$(pwd) python conversion_rate_analyzer/main.py data/10min.jsonl
+	PYTHONPATH=$(pwd) python conversion_rate_analyzer/main.py data/10min_single_curr.jsonl
 
 test:
 	PYTHONPATH=$(pwd) pytest

@@ -29,8 +29,8 @@ def path_input_file_sample() -> str:
 
 
 @pytest.fixture
-def path_input_file_10min_stream() -> str:
-    return os.path.join(PROJECT_ROOT_DIR, "input/10min.jsonl")
+def path_input_file_10min_single_curr_stream() -> str:
+    return os.path.join(PROJECT_ROOT_DIR, "input/10min_single_curr.jsonl")
 
 
 @pytest.fixture
