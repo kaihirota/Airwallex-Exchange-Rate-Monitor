@@ -1,6 +1,8 @@
-/output/
 /logs/
 __pycache__
 .idea/
 .coverage
 htmlcov
+.ipynb_checkpoints
+/output/**
+!/output/output1.jsonl
