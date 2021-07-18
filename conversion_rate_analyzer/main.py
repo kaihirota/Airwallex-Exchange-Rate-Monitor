@@ -18,10 +18,19 @@ data_points_processed = 0
 
 
 def main():
+    """
+    The program:
+    - reads from input jsonline file passed via command line argument,
+    - convert each line into a CurrencyConversionRate object after validating data,
+    - and uses the MovingAverageQueue singleton object to record conversion rates for each currency pair
+      while retaining a spcific number of latest n records for continuously updating moving averages
+    - when the percentage difference between a new conversion rate and the current moving average exceed
+      the acceptance threshold, the program will print to the console and log that alert to the output file
+    - all logs are captured and stored in `logs` directory as well
+    """
     if len(sys.argv) < 2:
         e = IndexError("Supply the input file path as an argument: python main.py input.jsonl")
         logger.warning(e)
-        # sys.exit(1)
         raise e
 
     input_file = sys.argv[1]
@@ -48,7 +57,6 @@ def main():
                 logger.warning(e)
     except FileNotFoundError as e:
         logger.exception(e)
-        # sys.exit(1)
         raise e
 
 
