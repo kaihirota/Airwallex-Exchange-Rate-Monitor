@@ -18,7 +18,7 @@ OUTPUT_DIR = os.path.join(PROJECT_ROOT_DIR, "output")
 if not os.path.exists(OUTPUT_DIR):
     os.mkdir(OUTPUT_DIR)
 
-#TODO add date
+# TODO add date
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "output.jsonl")
 
 """
