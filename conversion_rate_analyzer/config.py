@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 from pathlib import Path
 
@@ -18,11 +19,11 @@ OUTPUT_DIR = os.path.join(PROJECT_ROOT_DIR, "output")
 if not os.path.exists(OUTPUT_DIR):
     os.mkdir(OUTPUT_DIR)
 
-# TODO add date
-OUTPUT_FILE = os.path.join(OUTPUT_DIR, "output.jsonl")
+current_date = datetime.now().strftime("%Y-%m-%d")
+OUTPUT_FILE = os.path.join(OUTPUT_DIR, f"{current_date}.jsonl")
 
 """
-if VERBOSE is set to True, new conversation rate, moving average, and 
+if VERBOSE is set to True, new conversation rate, last moving average, and 
 percentage change will also be included in the output jsonlines file.
 """
 VERBOSE = False

@@ -4,6 +4,7 @@ from typing import Dict
 from unittest.mock import patch
 
 import jsonlines
+from jsonlines import InvalidLineError
 import pytest
 
 from conversion_rate_analyzer import config
@@ -47,3 +48,25 @@ def test_main(path_output_file_test: str):
     assert reader.read() == {"timestamp": 1554933794.023, "currencyPair": "CNYAUD", "alert": "spotChange"}
     from conversion_rate_analyzer.main import data_points_processed
     assert data_points_processed == 11
+
+
+@patch("sys.argv", ["conversion_rate_analyzer/main.py", "input/input2.jsonl"])
+def test_main_invalid_jsonline(path_input_file_sample: str, path_output_file_test: str):
+    reader = jsonlines.open(path_input_file_sample)
+
+    path, filename = os.path.split(path_input_file_sample)
+    new_file = os.path.join(path, "test" + filename)
+    writer = jsonlines.open(new_file, "w")
+
+    for obj in reader:
+        writer.write(obj)
+
+    writer.close()
+
+    with open(new_file, "a") as f:
+        f.write("invalid line")
+
+    with pytest.raises(InvalidLineError):
+        main()
+
+    os.remove(new_file)

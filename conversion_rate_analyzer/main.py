@@ -2,6 +2,7 @@ import sys
 import time
 from pathlib import Path
 
+from jsonlines import InvalidLineError
 from loguru import logger
 from pydantic.error_wrappers import ValidationError
 
@@ -11,7 +12,8 @@ if PROJECT_ROOT_DIR not in sys.path:  # pragma: no cover
 
 from conversion_rate_analyzer import config
 from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
-from conversion_rate_analyzer.moving_average import MovingAverageQueue
+from conversion_rate_analyzer.moving_average_queue import MovingAverageQueue
+from conversion_rate_analyzer.utils.exceptions import SpotRateWriterError
 from conversion_rate_analyzer.utils.reader import SpotRateReader
 
 data_points_processed = 0
@@ -31,7 +33,7 @@ The program:
 def main():
     if len(sys.argv) < 2:
         e = IndexError("Supply the input file path as an argument: python main.py input.jsonl")
-        logger.warning(e)
+        logger.error(e)
         raise e
 
     input_file = sys.argv[1]
@@ -61,7 +63,13 @@ def main():
 
         queue.terminate_writer()
     except FileNotFoundError as e:
-        logger.exception(e)
+        logger.error(e)
+        raise e
+    except InvalidLineError as e:
+        logger.error(e)
+        raise e
+    except SpotRateWriterError as e: # pragma: no cover
+        logger.error(e)
         raise e
 
 

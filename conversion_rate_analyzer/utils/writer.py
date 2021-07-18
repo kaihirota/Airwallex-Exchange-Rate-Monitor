@@ -6,12 +6,17 @@ from loguru import logger
 
 from conversion_rate_analyzer import config
 from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
+from conversion_rate_analyzer.utils.exceptions import SpotRateWriterError
 
 
-@logger.catch
 class SpotRateWriter:
     """Class for writing conversion rates that exceed acceptance threshold percentage.
     Data will be written into a jsonline file.
+
+    Throws:
+        SpotRateWriterException:
+            Attempt made to write without initializing the jsonline writer,
+            or the output file has been removed before closing.
     """
 
     def __init__(self, path: str):
@@ -34,7 +39,6 @@ class SpotRateWriter:
             current_avg_rate: float = None,
             pct_change: float = None
     ):
-        # TODO what if writer is closed
         out = data.dict()
 
         if config.VERBOSE:
@@ -49,4 +53,8 @@ class SpotRateWriter:
 
     def close(self):
         self.writer.close()
+
+        if not os.path.exists(self.path):
+            raise SpotRateWriterError("Output file has been removed before closing.", self.path)
+
         logger.info(f"Jsonline writer terminated and output file closed. Saved output at {self.path}.")

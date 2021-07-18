@@ -4,6 +4,7 @@ from loguru import logger
 
 from conversion_rate_analyzer import config
 from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
+from conversion_rate_analyzer.utils.exceptions import SpotRateWriterError
 from conversion_rate_analyzer.utils.writer import SpotRateWriter
 
 
@@ -50,10 +51,18 @@ class MovingAverageQueue:
 
     def terminate_writer(self):
         logger.info(f"Terminating jsonline writer...")
-        self.jsonline_writer.close()
+        try:
+            self.jsonline_writer.close()
+        except SpotRateWriterError as e:
+            logger.exception(e)
+            raise e
 
     def process_new_rate(self, data: CurrencyConversionRate):
         """Process new conversion rate data."""
+        if not self.jsonline_writer:
+            e = SpotRateWriterError("Jsonline writer not initialized")
+            logger.error(e)
+            raise e
 
         if data.currencyPair not in self.known_currency_pairs:
             self.known_currency_pairs.add(data.currencyPair)
