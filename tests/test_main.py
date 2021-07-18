@@ -4,8 +4,8 @@ from typing import Dict
 from unittest.mock import patch
 
 import jsonlines
-from jsonlines import InvalidLineError
 import pytest
+from jsonlines import InvalidLineError
 
 from conversion_rate_analyzer import config
 from conversion_rate_analyzer.main import main

@@ -15,7 +15,7 @@ clean:
 	rm -rf logs
 	rm -rf .pytest_cache
 	rm -rf __pycache__
-	rm output/output.jsonl
 	rm output/output_test.jsonl
+	rm output/2021*.jsonl
 
 all: test clean

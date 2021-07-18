@@ -1,7 +1,7 @@
 from typing import Dict
 
-import pytest
 from jsonlines.jsonlines import Reader
+import pytest
 
 from conversion_rate_analyzer.utils.reader import SpotRateReader
 

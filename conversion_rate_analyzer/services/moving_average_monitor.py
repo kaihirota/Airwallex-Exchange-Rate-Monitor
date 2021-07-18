@@ -8,7 +8,7 @@ from conversion_rate_analyzer.utils.exceptions import SpotRateWriterError
 from conversion_rate_analyzer.utils.writer import SpotRateWriter
 
 
-class MovingAverageQueue:
+class MovingAverageMonitor:
     """Singleton object for storing the latest conversion rates and keeping the moving average updated.
 
     This is a singleton object for storing the latest n conversion rates for
@@ -18,8 +18,14 @@ class MovingAverageQueue:
     For each currency pair, this object creates a queue with finite capacity
     to hold the latest n conversion rates (specified by MOVING_AVERAGE_WINDOW in the config file).
 
+    By using a PriorityQueue, even if conversion rates are received out-of-order,
+    the accuracy of moving average will not be lost as items will be dequeued by timestamp priority.
+
     Throws:
         KeyError: Currency pair does not exist.
+        SpotRateWriterError:
+            Attempt made to write without initializing the jsonline writer,
+            or the output file has been removed before closing.
     """
 
     instance = None

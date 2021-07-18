@@ -3,8 +3,8 @@ import os
 from pathlib import Path
 from typing import Dict
 
-from _pytest.logging import caplog as _caplog
 import pytest
+from _pytest.logging import caplog as _caplog
 from loguru import logger
 
 from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate

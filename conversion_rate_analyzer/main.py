@@ -12,7 +12,7 @@ if PROJECT_ROOT_DIR not in sys.path:  # pragma: no cover
 
 from conversion_rate_analyzer import config
 from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
-from conversion_rate_analyzer.moving_average_queue import MovingAverageQueue
+from conversion_rate_analyzer.services.moving_average_monitor import MovingAverageMonitor
 from conversion_rate_analyzer.utils.exceptions import SpotRateWriterError
 from conversion_rate_analyzer.utils.reader import SpotRateReader
 
@@ -22,7 +22,7 @@ data_points_processed = 0
 The program:
 - reads from input jsonline file passed via command line argument,
 - convert each line into a CurrencyConversionRate object after validating data,
-- and uses the MovingAverageQueue singleton object to record conversion rates for each currency pair
+- and uses the MovingAverageMonitor singleton object to record conversion rates for each currency pair
   while retaining a specific number of latest n records for continuously updating moving averages
 - when the percentage difference between a new conversion rate and the current moving average exceed
   the acceptance threshold, the program will print to the console and log that alert to the output file
@@ -48,27 +48,27 @@ def main():
     )
 
     global data_points_processed
-    queue = MovingAverageQueue()
+    monitor = MovingAverageMonitor()
 
     try:
-        queue.initialize_writer(config.OUTPUT_FILE)
+        monitor.initialize_writer(config.OUTPUT_FILE)
         reader = SpotRateReader().jsonlines_reader(input_file)
         for obj in reader:
             try:
                 data = CurrencyConversionRate.parse_obj(obj)
-                queue.process_new_rate(data)
+                monitor.process_new_rate(data)
                 data_points_processed += 1
             except ValidationError as e:
                 logger.warning(e)
 
-        queue.terminate_writer()
+        monitor.terminate_writer()
     except FileNotFoundError as e:
         logger.error(e)
         raise e
     except InvalidLineError as e:
         logger.error(e)
         raise e
-    except SpotRateWriterError as e: # pragma: no cover
+    except SpotRateWriterError as e:  # pragma: no cover
         logger.error(e)
         raise e
 

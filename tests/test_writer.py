@@ -2,11 +2,8 @@ import os
 from unittest.mock import patch
 
 import jsonlines
-import pytest
 
-from conversion_rate_analyzer import config
 from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
-from conversion_rate_analyzer.utils.exceptions import SpotRateWriterError
 from conversion_rate_analyzer.utils.writer import SpotRateWriter
 
 
