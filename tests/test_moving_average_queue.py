@@ -5,7 +5,7 @@ import jsonlines
 import pytest
 
 from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyConversionRate
-from conversion_rate_analyzer.services.moving_average_monitor import MovingAverageMonitor
+from conversion_rate_analyzer.service.moving_average_monitor import MovingAverageMonitor
 from conversion_rate_analyzer.utils.exceptions import SpotRateWriterError
 from conversion_rate_analyzer.utils.reader import SpotRateReader
 
