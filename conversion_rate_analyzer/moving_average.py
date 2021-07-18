@@ -39,6 +39,19 @@ class MovingAverageQueue:
         # sum of the conversion rates contained in `self.conversion_rates` and the current queue size
         self.conversion_rates_sum_count = {}
 
+        self.jsonline_writer = None
+
+    def initialize_writer(self, path: str):
+        if self.jsonline_writer:
+            self.jsonline_writer.close()
+
+        logger.info(f"Initializing jsonline writer with output path: {path}.")
+        self.jsonline_writer = SpotRateWriter(path)
+
+    def terminate_writer(self):
+        logger.info(f"Terminating jsonline writer...")
+        self.jsonline_writer.close()
+
     def process_new_rate(self, data: CurrencyConversionRate):
         """Process new conversion rate data."""
 
@@ -55,9 +68,9 @@ class MovingAverageQueue:
 
             if pct_change >= config.PCT_CHANGE_THRESHOLD:
                 if config.VERBOSE:
-                    SpotRateWriter().write(data, current_avg_rate, pct_change)
+                    self.jsonline_writer.write(data, current_avg_rate, pct_change)
                 else:
-                    SpotRateWriter().write(data)
+                    self.jsonline_writer.write(data)
 
                 logger.info(
                     (

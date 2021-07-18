@@ -10,14 +10,31 @@ from conversion_rate_analyzer.models.currency_conversion_rate import CurrencyCon
 
 @logger.catch
 class SpotRateWriter:
-    """Class for writing conversion rates that exceed acceptance threshold percentage."""
+    """Class for writing conversion rates that exceed acceptance threshold percentage.
+    Data will be written into a jsonline file.
+    """
 
-    @staticmethod
-    def write(data: CurrencyConversionRate, current_avg_rate: float = None, pct_change: float = None):
+    def __init__(self, path: str):
         """
-        Appends the data to the output file specified in the config file.
-        If the file does not exist, new file will be created.
+        This writer appends the data to the specified output file.
+        If the file does not exist, it will be created.
+        The file will be flushed after each write.
         """
+        self.path = path
+
+        if not os.path.exists(self.path):
+            logger.info(f"Output file ({self.path}) does not exist. Creating file.")
+
+        self.writer: Writer = jsonlines.open(self.path, mode="a", flush=True)
+        logger.info("Jsonline writer created.")
+
+    def write(
+            self,
+            data: CurrencyConversionRate,
+            current_avg_rate: float = None,
+            pct_change: float = None
+    ):
+        # TODO what if writer is closed
         out = data.dict()
 
         if config.VERBOSE:
@@ -28,9 +45,8 @@ class SpotRateWriter:
 
         out["alert"] = "spotChange"
 
-        if not os.path.exists(config.OUTPUT_FILE):
-            logger.info(f"Output file ({config.OUTPUT_FILE}) does not exist. Creating file.")
+        self.writer.write(out)
 
-        writer: Writer = jsonlines.open(config.OUTPUT_FILE, mode="a")
-        writer.write(out)
-        writer.close()
+    def close(self):
+        self.writer.close()
+        logger.info(f"Jsonline writer terminated and output file closed. Saved output at {self.path}.")
