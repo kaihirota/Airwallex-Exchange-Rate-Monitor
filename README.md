@@ -51,6 +51,14 @@ Outputs
 - The specified jsonline output for spot rate change is saved to output file in `output` directory.
 - Logs are saved in the `logs` directory.
 
+Output Jsonlines
+
+![misc/output.png](misc/output.png)
+
+Logging
+
+![misc/log.png](misc/log.png)
+
 ## Design
 
 Based on the assumption that new data point for each conversion rates are received every second, the number of data points received per second is
