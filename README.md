@@ -66,11 +66,15 @@ To avoid having to compute the sum of all the elements in the queue every time, 
 
 Formally,
 
-Let $x_{i,j,t}$ be the moving average of the spot rate from currency $i \rightarrow j$ for the 5-minute interval ending at time $t$, and $r_{i,j,t}$ be the spot rate from currency $i \rightarrow j$ at time $t$. Then,
+![misc/equation.png](misc/equation.png)
 
-$$
-x_{i,j,t} = \frac{(300 \times x_{i,j,t-1}) - r_{i,j,t-300} + r_{i,j,t}}{300}
-$$
+[comment]: <> (Let $x_{i,j,t}$ be the moving average of the spot rate from currency $i \rightarrow j$ for the 5-minute interval ending at time $t$, and $r_{i,j,t}$ be the spot rate from currency $i \rightarrow j$ at time $t$. Then,)
+
+[comment]: <> ($$)
+
+[comment]: <> (x_{i,j,t} = \frac{&#40;300 \times x_{i,j,t-1}&#41; - r_{i,j,t-300} + r_{i,j,t}}{300})
+
+[comment]: <> ($$)
 
 ## Data structure considerations
 
@@ -132,4 +136,5 @@ Things that I considered adding, but were either not important or necessary for 
 - Create a trend analyzer service that runs on a separate thread. Modify `MovingAverageMonitor` to append every moving average conversion rate to a csv file. 
 	- Trend analyzer can look at that data to do more sophisticated monitoring (for example, monitor percentage change over a longer period of time, or continuously monitor the % change of % change)
 	- If compute-intensive or longer processing needs to be done, move all of those tasks to trend analyzer so that those tasks do not block the `MovingAverageMonitor`.
+		- Python may not be the best for this due to Global Interpreter Lock
 - Add a real-time dashboard (for example, using Dash by plotly).
