@@ -1,3 +1,4 @@
+[![codecov](https://codecov.io/gh/from81/Airwallex-Exchange-Rate-Monitor/branch/main/graph/badge.svg?token=5OJT434R2Q)](https://codecov.io/gh/from81/Airwallex-Exchange-Rate-Monitor)
 
 # Summary
 Coding challenge for Airwallex. For details on the challenge, see [Challenge.md](Challenge.md).
