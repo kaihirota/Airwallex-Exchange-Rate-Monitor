@@ -1,5 +1,8 @@
 
 # Summary
+Coding challenge for Airwallex. For details on the challenge, see [Challenge.md](Challenge.md).
+
+Time given: July 16 Friday 6PM - July 19 9AM
 
 This program:
 - Reads from input jsonline file passed via command line argument,
