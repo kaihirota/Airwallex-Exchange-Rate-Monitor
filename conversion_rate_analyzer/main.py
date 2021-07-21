@@ -52,7 +52,17 @@ def main():
 
     try:
         monitor.initialize_writer(config.OUTPUT_FILE)
+    except SpotRateWriterError as e:  # pragma: no cover
+        logger.error(e)
+        raise e
+
+    try:
         reader = SpotRateReader().jsonlines_reader(input_file)
+    except FileNotFoundError as e:
+        logger.error(e)
+        raise e
+
+    try:
         for obj in reader:
             try:
                 data = CurrencyConversionRate.parse_obj(obj)
@@ -62,13 +72,7 @@ def main():
                 logger.warning(e)
 
         monitor.terminate_writer()
-    except FileNotFoundError as e:
-        logger.error(e)
-        raise e
     except InvalidLineError as e:
-        logger.error(e)
-        raise e
-    except SpotRateWriterError as e:  # pragma: no cover
         logger.error(e)
         raise e
 
