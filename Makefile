@@ -11,6 +11,7 @@ test:
 clean: SHELL := /bin/bash
 clean:
 	rm .coverage
+	rm coverage.xml
 	rm -rf htmlcov
 	rm -rf logs
 	rm -rf .pytest_cache
