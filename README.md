@@ -143,6 +143,7 @@ I've included the html export of the Jupyter notebook in case you want to see.
 
 Things that I considered adding, but were either not important or necessary for the given task, or needed more time to implement.
 
+- [x] [Rewrite in Java](https://github.com/from81/Airwallex-Coding-Challenge)
 - Rewrite using Scala. I don't really have a justification, I just want to because I'm learning Scala at the moment.
 	- By nature of functional programming, I could create a service that accepts functions as parameter, and these functions can be run on the moving averages. This would make extending and adding more analysis easier. I can't do this with Python because while I can pass functions as objects, there will be absolutely no type safety and the program cannot be designed to know which type of data the passed function accepts.
 	- I don't have a strong argument for why Scala over Java. I can code in Java, but at this point my proficiency in Scala and Java are about the same.
