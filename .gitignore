@@ -6,4 +6,4 @@ htmlcov
 .ipynb_checkpoints
 /output/**
 !/output/output1.jsonl
-coverage.xml
+coverage.xml.DS_Store
