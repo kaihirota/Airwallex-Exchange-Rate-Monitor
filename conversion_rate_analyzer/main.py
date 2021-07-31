@@ -77,4 +77,4 @@ if __name__ == "__main__":
     start_time = time.time()
     main()
     end_time = time.time()
-    logger.info(f"{data_points_processed} data points processed in {end_time - start_time:.2f} seconds")
+    logger.info(f"{data_points_processed} data points processed in {end_time - start_time:.4f} seconds")
